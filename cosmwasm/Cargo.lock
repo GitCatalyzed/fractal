@@ -239,6 +239,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cec318a675afcb6a1ea1d4340e2d377e56e47c266f28043ceccbf4412ddfdd3b"
 
 [[package]]
+name = "core_invoice"
+version = "0.1.0"
+dependencies = [
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cosmwasm-storage",
+ "cw-multi-test",
+ "cw-storage-plus",
+ "cw2",
+ "schemars",
+ "serde",
+ "thiserror",
+]
+
+[[package]]
 name = "cosmos-sdk-proto"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -333,6 +348,16 @@ dependencies = [
  "sha2 0.10.6",
  "thiserror",
  "uint",
+]
+
+[[package]]
+name = "cosmwasm-storage"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c91b9880577b6fa389f60bbcc8daab202996150c51ed0d14e6532a87a764a7d5"
+dependencies = [
+ "cosmwasm-std",
+ "serde",
 ]
 
 [[package]]
