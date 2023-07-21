@@ -16,23 +16,12 @@ pub struct InstantiateMsg {
 #[serde(rename_all = "snake_case")]
 pub enum ExecuteMsg {
 
-    CreateInvoice{
-        //should payer_addr and payer_alias be linked in relational DB?
-        payer_addr: String,
-        payer_alias: String,
+    PayInvoice{
         invoice_id: String,
-        invoiced_value: String,
-        date_due: String,
+        payer_alias: String,
+        payment_amount: String,
         pay_unit: String,
-        receipt_unit: String,
-    },
-
-    // PayInvoice{
-    //     invoice_id: String,
-    //     payer_alias: String,
-    //     payment_amount: String,
-    //     pay_unit: String,
-    // }
+    }
 
 }
 
@@ -51,19 +40,12 @@ pub enum QueryMsg {
     //
     // #[returns(YourQueryResponse)]
     // YourQuery {},
-    #[returns(AllInvoicessResponse)]
-    AllInvoices{},
-    
-    #[returns(InvoiceResponse)]
-    Invoice{
-        invoice_id: String,
-    },
 
-    // #[returns(PaymentResponse)]
-    // Payment{
-    //     invoice_id: String,
-    //     address: String,
-    // },
+    #[returns(PaymentResponse)]
+    Payment{
+        invoice_id: String,
+        address: String,
+    },
 
 }
 
@@ -71,7 +53,7 @@ pub enum QueryMsg {
 // #[cw_serde]
 // pub struct YourQueryResponse {}
 // Needed import
-use crate::state::{Invoice};//, Payment};
+use crate::state::{Invoice, Payment};
 // Previous code omitted
 // Needed macro derivations
 #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
@@ -86,8 +68,8 @@ pub struct InvoiceResponse {
     pub invoice: Option<Invoice>,
 }
 
-// // Previous code omitted
-// #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-// pub struct PaymentResponse {
-//     pub payment: Option<Payment>,
-// }
+// Previous code omitted
+#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+pub struct PaymentResponse {
+    pub payment: Option<Payment>,
+}

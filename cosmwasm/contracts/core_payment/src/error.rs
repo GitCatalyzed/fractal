@@ -14,17 +14,11 @@ pub enum ContractError {
     // Add any other custom errors you like here.
     // Look at https://docs.rs/thiserror/1.0.21/thiserror/ for details.
 
-    #[error("Invoice has no value")]
-    NoInvoiceValue{},
+    #[error("Paying address doesn't match expected payer")]
+    IncorrectPayer{},
 
-    #[error("Invoice has no date due")]
-    NoDateDueValue{},
-
-    // #[error("Paying address doesn't match expected payer")]
-    // IncorrectPayer{},
-
-    // #[error("Payment value is negative")]
-    // InvalidPaymentValue{},
+    #[error("Payment value is negative")]
+    InvalidPaymentValue{},
 
     #[error("Incorrect Date Format")]
     InvalidDate{},
