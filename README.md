@@ -1,3 +1,21 @@
+STORE CONTRACT
+osmosisd tx wasm store /workspaces/osmosis/cosmwasm/artifacts/core_payment.wasm --from lo-test2 --chain-id localosmosis --gas auto --gas-adjustment 1.3 -b block --keyring-backend test --fees 4500uosmo
+
+INSTANTIATE CONTRACT
+osmosisd tx wasm instantiate [X] '{}' --from lo-test1 --keyring-backend test --chain-id localosmosis --gas auto --fees 4500uosmo --gas-adjustment 1.3 -b block --label isolated_invoice --no-admin
+
+CREATE INVOICE:
+osmosisd tx wasm execute osmo1kj8q8g2pmhnagmfepp9jh9g2mda7gzd0m5zdq0s08ulvac8ck4dqptxsjf '{"create_invoice": {"payer_addr":"osmo18s5lynnmx37hq4wlrw9gdn68sg2uxp5rgk26vv","payer_alias":"Shaw Steel", "invoice_id":"I0000001", "invoiced_value":"35000.1","date_due":"09/01/2023", "pay_unit":"USD", "receipt_unit":"USD"}}' --from lo-test1 --keyring-backend test --fees 875uosmo -b block --chain-id localosmosis
+
+PAY INVOICE:
+osmosisd tx wasm execute osmo17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgs5yczr8 '{"pay_invoice":  {"invoice_id":"I0000001","payer_alias":"Shaw Steel", "payment_amount":"5000", "pay_unit":"USD"}}' --from lo-test2 --keyring-backend test --fees 875uosmo -b block --chain-id localosmosis
+
+QUERY ALL INVOICES FOR CONTRACT ADDRESS:
+osmosisd query wasm contract-state smart osmo1kj8q8g2pmhnagmfepp9jh9g2mda7gzd0m5zdq0s08ulvac8ck4dqptxsjf '{"all_invoices":{}}'
+
+
+
+
 # Osmosis
 
 ![Banner!](assets/banner.png)
