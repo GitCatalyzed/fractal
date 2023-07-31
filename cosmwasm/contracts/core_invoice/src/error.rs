@@ -29,5 +29,8 @@ pub enum ContractError {
     #[error("Incorrect Date Format")]
     InvalidDate{},
 
+    #[error("Invalid USDC Address")]
+    InvalidUSDCAddress{},
+
 
 }

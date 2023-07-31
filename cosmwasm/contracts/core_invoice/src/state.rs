@@ -2,16 +2,38 @@
 // see: https://crates.io/crates/cw-storage-plus
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use cosmwasm_std::{Addr, Decimal, Timestamp};
+use cosmwasm_std::{Addr, Storage, Decimal, Timestamp};
 use cw_storage_plus::{Item, Map};
+use cosmwasm_storage::{singleton, singleton_read, ReadonlySingleton, Singleton};
 
+static CONFIG_KEY: &[u8] = b"config";
+//static INVOICE_KEY: &[u8] = b"invoice";
 
+pub fn config_write(storage: &mut dyn Storage) -> Singleton<Config> {
+    singleton(storage, CONFIG_KEY)
+}
+
+pub fn config_read(storage: &dyn Storage) -> ReadonlySingleton<Config> {
+    singleton_read(storage, CONFIG_KEY)
+}
+
+// pub fn invoice_write(storage: &mut dyn Storage) -> Singleton<Invoice> {
+//     singleton(storage, INVOICE_KEY)
+// }
+
+// pub fn invoice_read(storage: &dyn Storage) -> ReadonlySingleton<Invoice> {
+//     singleton_read(storage, INVOICE_KEY)
+// }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Config {
-   pub admin: Addr
-}
+   pub admin: Addr,
+   pub business_alias: String,
+   pub usdc_address: Addr,
+   pub bank_routing: u16,
+   pub bank_account: u16,
 
+}
 
 //This either needs to be, or needs to create an NFT
 //It should interact with the payment struct to determine status
@@ -28,6 +50,7 @@ pub struct Invoice {
     pub pay_unit: String,
     pub receipt_unit: String,
     pub payment_history: Vec<Payment>,
+    pub tokenized_status: String,
 }
 
 // The payment struct needs to interact with cross-chain/cross-mode accounts (i.e. bank accounts) for fidelity
@@ -41,9 +64,8 @@ pub struct Payment {
     pub pay_unit: String,
     pub pay_date: Timestamp,
 }
-// Following code omitted
 
 
-pub const CONFIG: Item<Config> = Item::new("config");
+// pub const CONFIG: Item<Config> = Item::new("config");
 pub const INVOICES: Map<String, Invoice> = Map::new("invoices");
-pub const PAYMENTS: Map<(Addr, String), Payment> = Map::new("payments");
+//pub const PAYMENTS: Map<(Addr, String), Payment> = Map::new("payments");
