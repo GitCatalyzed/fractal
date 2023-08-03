@@ -1,4 +1,3 @@
-
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
     entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult, Order, to_binary, Decimal, Timestamp
@@ -31,6 +30,7 @@ pub fn instantiate(
     let admin = msg.admin.unwrap_or(info.sender.to_string());
     let validated_admin = deps.api.addr_validate(&admin)?;
 
+    //Payee's USDC address; to address
     let usdc_address = msg.usdc_address.unwrap_or("_".to_string());
     let validated_usdc_address = deps.api.addr_validate(&usdc_address)?;
 
@@ -93,7 +93,9 @@ pub fn execute(
 
         //ExecuteMsg::DeleteInvoice{}
 
-        //ExecuteMsg::UpdateInvoice[]
+        //ExecuteMsg::UpdateInvoice{}
+
+        //ExecuteMsg::RefundPayment{}
 
     }
 }

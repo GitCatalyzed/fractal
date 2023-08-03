@@ -1,17 +1,15 @@
-//There may be benefits to splitting the invoice and the payment into separate contracts
-//I am not sure if that would impact the payment's ability to access the invoice's KVStore and vis-a-versa
-//This will be a good branch test once this is working
-
-
 #[cfg(not(feature = "library"))]
-use cosmwasm_std::entry_point;
-use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult, Order, to_binary, Decimal, Timestamp};
+use cosmwasm_std::{
+    entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult, Order, to_binary, Decimal, Timestamp
+};
 use cw2::set_contract_version;
 use std::str::FromStr;
 
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg, PaymentResponse};
-use crate::state::{Config, CONFIG, Invoice, INVOICES, Payment, PAYMENTS};
+use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
+use crate::state::{config_write, Config, Invoice, Payment};
+use crate::execute_fns::create_payment;
+use crate::query_fns::query_all_payments;
 
 
 // version info for migration info
@@ -19,7 +17,7 @@ const CONTRACT_NAME: &str = "crates.io:payment";
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 /// Handling contract instantiation
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn instantiate(
     deps: DepsMut,
     _env: Env,
@@ -28,19 +26,33 @@ pub fn instantiate(
     msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
+
     let admin = msg.admin.unwrap_or(info.sender.to_string());
     let validated_admin = deps.api.addr_validate(&admin)?;
+
+    //Payer's USDC address; from address 
+    let usdc_address = msg.usdc_address.unwrap_or("_".to_string());
+    let validated_usdc_address = deps.api.addr_validate(&usdc_address)?;
+
     let config = Config{
         admin: validated_admin.clone(),
+        business_alias: msg.business_alias,
+        usdc_address: validated_usdc_address.clone(),
+        bank_routing: msg.bank_routing,
+        bank_account: msg.bank_account,
     };
 
-    CONFIG.save(deps.storage, &config)?;
+    config_write(deps.storage).save(&config)?;
 
     // With `Response` type, it is possible to dispatch message to invoke external logic.
     // See: https://github.com/CosmWasm/cosmwasm/blob/main/SEMANTICS.md#dispatching-messages
     Ok(Response::new()
         .add_attribute("action", "instantiate")
-        .add_attribute("admin", validated_admin.to_string()))
+        .add_attribute("admin", validated_admin.to_string())
+        .add_attribute("business_alias", config.business_alias.to_string())
+        .add_attribute("usdc_address", validated_usdc_address.to_string())
+        .add_attribute("bank_routing", config.bank_routing.to_string())
+        .add_attribute("bank_account", config.bank_account.to_string())
 }
 
 /// Handling contract migration
@@ -59,7 +71,7 @@ pub fn migrate(_deps: DepsMut, _env: Env, msg: MigrateMsg) -> Result<Response, C
 }
 
 /// Handling contract execution
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn execute(
     deps: DepsMut,
     env: Env,
@@ -67,14 +79,9 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        // Find matched incoming message variant and execute them with your custom logic.
-        //
-        // With `Response` type, it is possible to dispatch message to invoke external logic.
-        // See: https://github.com/CosmWasm/cosmwasm/blob/main/SEMANTICS.md#dispatching-messages
-
+       
         ExecuteMsg::PayInvoice{
             invoice_id,
-            payer_alias,
             payment_amount,
             pay_unit,
         } => execute_pay_invoice(deps, env, info, invoice_id, payer_alias, payment_amount, pay_unit),
