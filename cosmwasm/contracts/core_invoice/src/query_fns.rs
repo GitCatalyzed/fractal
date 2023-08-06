@@ -1,8 +1,7 @@
-use crate::error::ContractError;
-use crate::state::{config_read, Invoice, INVOICES};
-use crate::msg::AllInvoicesResponse;
+use crate::state::{Invoice, INVOICES};
+use crate::msg::{AllInvoicesResponse, OneInvoiceResponse};
 use cosmwasm_std::{
-    Binary, Deps, Env, Response, StdResult, Order, to_binary,
+    Binary, Deps, Env, StdResult, Order, to_binary,
 };
 
 pub fn query_all_invoices(deps:Deps) -> StdResult<Binary>{
@@ -16,7 +15,9 @@ pub fn query_all_invoices(deps:Deps) -> StdResult<Binary>{
 
 }
 
-// fn query_invoice(deps: Deps, _env: Env, invoice_id: String) -> StdResult<Binary> {
-//     let invoice = INVOICES.may_load(deps.storage, invoice_id.to_string())?;
-//     to_binary(&InvoiceResponse { invoice })
-// }
+pub fn query_one_invoice(deps: Deps, invoice_id: String) -> StdResult<Binary> {
+
+    let invoice = INVOICES.may_load(deps.storage, invoice_id.to_string())?;
+    to_binary(&OneInvoiceResponse { invoice })
+
+}

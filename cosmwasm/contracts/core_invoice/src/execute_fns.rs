@@ -1,8 +1,7 @@
 use crate::error::ContractError;
 use crate::state::{Invoice, config_write, Payment, INVOICES};
-use crate::msg::AllInvoicesResponse;
 use cosmwasm_std::{
-    entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult, Order, to_binary, Decimal, Timestamp
+    DepsMut, Env, MessageInfo, Response, Decimal, Timestamp
 };
 use std::str::FromStr;
 
@@ -68,4 +67,18 @@ pub fn create_invoice(
 
     Ok(Response::new()
         .add_attribute("action", "create_invoice"))
+}
+
+//Probably just need to pass invoice. Mark for Cleanup
+pub fn update_invoice (
+    deps: DepsMut,
+    _env: Env,
+    invoice_id: String,
+    invoice: Invoice,
+) -> Result <Response, ContractError> {
+
+    INVOICES.save(deps.storage, invoice_id, &invoice)?;
+    Ok(Response::new()
+        .add_attribute("action", "update_invoice"))
+
 }

@@ -8,8 +8,8 @@ use std::str::FromStr;
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
 use crate::state::{config_write, Config, Invoice, Payment};
-use crate::execute_fns::create_invoice;
-use crate::query_fns::query_all_invoices;
+use crate::execute_fns::{create_invoice, update_invoice};
+use crate::query_fns::{query_all_invoices, query_one_invoice};
 
 
 // version info for migration info
@@ -91,9 +91,12 @@ pub fn execute(
             receipt_unit,
         } => create_invoice(deps, env, info, payer_addr, payer_alias, invoice_id, invoiced_value, date_due, pay_unit,receipt_unit),
 
+        ExecuteMsg::UpdateInvoice{
+            invoice_id,
+            invoice,
+        } => update_invoice(deps, env, invoice_id, invoice),
+        
         //ExecuteMsg::DeleteInvoice{}
-
-        //ExecuteMsg::UpdateInvoice{}
 
         //ExecuteMsg::RefundPayment{}
 
@@ -116,7 +119,7 @@ pub fn query(
 
         QueryMsg::AllInvoices{} => query_all_invoices(deps),
 
-        //QueryMsg::Invoice{invoice_id} => query_invoice(deps, env, invoice_id),
+        QueryMsg::OneInvoice{invoice_id} => query_one_invoice(deps, invoice_id),
 
     }
 }

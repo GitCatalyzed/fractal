@@ -17,13 +17,6 @@ pub fn config_read(storage: &dyn Storage) -> ReadonlySingleton<Config> {
     singleton_read(storage, CONFIG_KEY)
 }
 
-// pub fn invoice_write(storage: &mut dyn Storage) -> Singleton<Invoice> {
-//     singleton(storage, INVOICE_KEY)
-// }
-
-// pub fn invoice_read(storage: &dyn Storage) -> ReadonlySingleton<Invoice> {
-//     singleton_read(storage, INVOICE_KEY)
-// }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Config {
@@ -60,6 +53,7 @@ pub struct Payment {
     pub payer_addr: Addr,
     pub payer_alias: String,
     pub invoice_id: String,
+    pub invoice_address: Addr,
     pub payment_amount: Decimal,
     pub pay_unit: String,
     pub pay_date: Timestamp,

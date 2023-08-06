@@ -2,12 +2,18 @@ use cosmwasm_schema::{cw_serde, QueryResponses};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use crate::state::{Payment, Invoice};
+
 /// Message type for `instantiate` entry_point
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub struct InstantiateMsg {
 
-        pub admin: Option<String>,
+    pub admin: Option<String>,
+    pub business_alias: String,
+    pub usdc_address: Option<String>,
+    pub bank_routing: u16,
+    pub bank_account: u16,
 
 }
 
@@ -18,7 +24,7 @@ pub enum ExecuteMsg {
 
     PayInvoice{
         invoice_id: String,
-        payer_alias: String,
+        invoice_address: String,
         payment_amount: String,
         pay_unit: String,
     }
@@ -33,13 +39,6 @@ pub enum MigrateMsg {}
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema, QueryResponses)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-    // This example query variant indicates that any client can query the contract
-    // using `YourQuery` and it will return `YourQueryResponse`
-    // This `returns` information will be included in contract's schema
-    // which is used for client code generation.
-    //
-    // #[returns(YourQueryResponse)]
-    // YourQuery {},
 
     #[returns(PaymentResponse)]
     Payment{
@@ -47,24 +46,15 @@ pub enum QueryMsg {
         address: String,
     },
 
+    #[returns(OneInvoiceResponse)]
+    OneInvoice{
+        invoice_id: String,
+    },
+
 }
 
-// We define a custom struct for each query response
-// #[cw_serde]
-// pub struct YourQueryResponse {}
-// Needed import
-use crate::state::{Invoice, Payment};
-// Previous code omitted
-// Needed macro derivations
 #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-//#[cw_serde]
-pub struct AllInvoicessResponse {
-    pub invoices: Vec<Invoice>,
-}
-
-// Previous code omitted
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-pub struct InvoiceResponse {
+pub struct OneInvoiceResponse {
     pub invoice: Option<Invoice>,
 }
 

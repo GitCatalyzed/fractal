@@ -23,5 +23,7 @@ pub enum ContractError {
     #[error("Incorrect Date Format")]
     InvalidDate{},
 
+    #[error("Invoice doe not exist")]
+    InvalidInvoice{},
 
 }

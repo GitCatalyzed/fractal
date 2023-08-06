@@ -9,11 +9,11 @@ use crate::state::{Invoice};
 #[serde(rename_all = "snake_case")]
 pub struct InstantiateMsg {
 
-        pub admin: Option<String>,
-        pub business_alias: String,
-        pub usdc_address: Option<String>,
-        pub bank_routing: u16,
-        pub bank_account: u16,
+    pub admin: Option<String>,
+    pub business_alias: String,
+    pub usdc_address: Option<String>,
+    pub bank_routing: u16,
+    pub bank_account: u16,
 
 }
 
@@ -32,9 +32,14 @@ pub enum ExecuteMsg {
         receipt_unit: String,
     },
 
+    UpdateInvoice{
+        invoice_id: String,
+        invoice: Invoice,
+    },
+    
     //DeleteInvoice{},
 
-    //UpdateInvoice{},
+    
 
 }
 
@@ -49,10 +54,10 @@ pub enum QueryMsg {
     //#[returns(AllInvoicesResponse)]
     AllInvoices{ },
     
-    // #[returns(InvoiceResponse)]
-    // Invoice{
-    //     invoice_id: String,
-    // },
+    //#[returns(OneInvoiceResponse)]
+    OneInvoice{
+        invoice_id: String,
+    },
 
     // #[returns(PaymentResponse)]
     // Payment{
@@ -70,7 +75,7 @@ pub struct AllInvoicesResponse {
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-pub struct InvoiceResponse {
+pub struct OneInvoiceResponse {
     pub invoice: Option<Invoice>,
 }
 
