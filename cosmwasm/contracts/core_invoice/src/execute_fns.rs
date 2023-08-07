@@ -1,9 +1,12 @@
 use crate::error::ContractError;
-use crate::state::{Invoice, config_write, Payment, INVOICES};
+use crate::state::{
+    config_read, INVOICES //, Invoice, Payment
+};
 use cosmwasm_std::{
-    DepsMut, Env, MessageInfo, Response, Decimal, Timestamp
+    DepsMut, Env, MessageInfo, Response, Decimal//, Timestamp
 };
 use std::str::FromStr;
+use fractal_structs::core::{Invoice, Payment};
 
 
 pub fn create_invoice(
@@ -20,7 +23,7 @@ pub fn create_invoice(
 ) -> Result<Response, ContractError>{
     
     //Ensure the invoice is created by owner of contract
-    let mut config = config_write(deps.storage).load()?;
+    let config = config_read(deps.storage).load()?;
     if info.sender != config.admin {
         return Err(ContractError::Unauthorized{});
     }

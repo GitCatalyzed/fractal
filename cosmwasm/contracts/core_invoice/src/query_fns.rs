@@ -1,7 +1,7 @@
-use crate::state::{Invoice, INVOICES};
+use crate::state::{INVOICES};
 use crate::msg::{AllInvoicesResponse, OneInvoiceResponse};
 use cosmwasm_std::{
-    Binary, Deps, Env, StdResult, Order, to_binary,
+    Binary, Deps, StdResult, Order, to_binary,
 };
 
 pub fn query_all_invoices(deps:Deps) -> StdResult<Binary>{

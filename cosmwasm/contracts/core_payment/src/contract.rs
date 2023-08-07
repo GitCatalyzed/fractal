@@ -1,15 +1,14 @@
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult, Order, to_binary, Decimal, Timestamp
+    entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult //, Order, to_binary, Decimal, Timestamp
 };
 use cw2::set_contract_version;
-use std::str::FromStr;
 
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
-use crate::state::{config_write, Config, Invoice, Payment, PAYMENTS};
-use crate::execute_fns::execute_pay_invoice;
-use crate::query_fns::query_payment;
+use crate::state::{config_write, Config};
+use crate::pay_execute_fns::{execute_pay_invoice};
+use crate::pay_query_fns::{query_payment};
 
 
 // version info for migration info

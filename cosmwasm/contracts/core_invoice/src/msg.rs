@@ -1,8 +1,9 @@
-use cosmwasm_schema::{cw_serde, QueryResponses};
+use cosmwasm_schema::{cw_serde};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::state::{Invoice};
+//use crate::state::{Invoice};
+use fractal_structs::core::{Invoice, Payment};
 
 /// Message type for `instantiate` entry_point
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]

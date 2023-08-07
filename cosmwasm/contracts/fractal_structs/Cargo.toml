@@ -1,5 +1,5 @@
 [package]
-name = "core_invoice"
+name = "fractal_structs"
 version = "0.1.0"
 authors = ["GitCatalyzed <102836139+GitCatalyzed@users.noreply.github.com>"]
 edition = "2021"
@@ -48,7 +48,6 @@ cw2 = "1.0.1"
 schemars = "0.8.10"
 serde = { version = "1.0.145", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0.31" }
-fractal_structs = {path = "../fractal_structs"}
 
 [dev-dependencies]
 cw-multi-test = "0.16.2"

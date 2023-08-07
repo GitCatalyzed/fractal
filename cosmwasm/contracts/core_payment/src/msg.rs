@@ -2,7 +2,8 @@ use cosmwasm_schema::{cw_serde, QueryResponses};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::state::{Payment, Invoice};
+//use crate::state::{Payment, Invoice};
+use fractal_structs::core::{Invoice, Payment};
 
 /// Message type for `instantiate` entry_point
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -46,10 +47,10 @@ pub enum QueryMsg {
         address: String,
     },
 
-    #[returns(OneInvoiceResponse)]
-    OneInvoice{
-        invoice_id: String,
-    },
+    // #[returns(OneInvoiceResponse)]
+    // OneInvoice{
+    //     invoice_id: String,
+    // },
 
 }
 
