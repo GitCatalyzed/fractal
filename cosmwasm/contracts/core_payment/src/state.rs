@@ -21,9 +21,9 @@ pub fn config_read(storage: &dyn Storage) -> ReadonlySingleton<Config> {
 pub struct Config {
    pub admin: Addr,
    pub business_alias: String,
-   pub usdc_address: Addr,
-   pub bank_routing: u16,
-   pub bank_account: u16,
+   pub usdc_address: String,
+   pub bank_routing: String,
+   pub bank_account: String,
 
 }
 

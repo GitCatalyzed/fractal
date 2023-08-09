@@ -32,12 +32,12 @@ pub fn instantiate(
 
     //Payee's USDC address; to address
     let usdc_address = msg.usdc_address.unwrap_or("_".to_string());
-    let validated_usdc_address = deps.api.addr_validate(&usdc_address)?;
+    //let validated_usdc_address = deps.api.addr_validate(&usdc_address)?;
 
     let config = Config{
         admin: validated_admin.clone(),
         business_alias: msg.business_alias,
-        usdc_address: validated_usdc_address.clone(),
+        usdc_address: usdc_address.clone(),
         bank_routing: msg.bank_routing,
         bank_account: msg.bank_account,
     };
@@ -50,7 +50,7 @@ pub fn instantiate(
         .add_attribute("action", "instantiate")
         .add_attribute("admin", validated_admin.to_string())
         .add_attribute("business_alias", config.business_alias.to_string())
-        .add_attribute("usdc_address", validated_usdc_address.to_string())
+        .add_attribute("usdc_address", usdc_address.to_string())
         .add_attribute("bank_routing", config.bank_routing.to_string())
         .add_attribute("bank_account", config.bank_account.to_string())
     )

@@ -13,8 +13,8 @@ pub struct InstantiateMsg {
     pub admin: Option<String>,
     pub business_alias: String,
     pub usdc_address: Option<String>,
-    pub bank_routing: u16,
-    pub bank_account: u16,
+    pub bank_routing: String,
+    pub bank_account: String,
 
 }
 
