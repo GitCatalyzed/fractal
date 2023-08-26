@@ -1,4 +1,4 @@
-use cosmwasm_schema::{cw_serde};
+use cosmwasm_schema::{cw_serde, QueryResponse};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -49,10 +49,10 @@ pub enum ExecuteMsg {
 pub enum MigrateMsg {}
 
 /// Message type for `query` entry_point
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema, QueryResponse)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-    //#[returns(AllInvoicesResponse)]
+    #[returns(AllInvoicesResponse)]
     AllInvoices{ },
     
     //#[returns(OneInvoiceResponse)]
