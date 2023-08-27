@@ -1,5 +1,6 @@
 use cosmwasm_std::StdError;
 use thiserror::Error;
+use cw_utils::PaymentError;
 
 #[derive(Error, Debug)]
 pub enum ContractError {
@@ -25,5 +26,8 @@ pub enum ContractError {
 
     #[error("Invoice doe not exist")]
     InvalidInvoice{},
+
+    #[error("Payment error: {0}")]
+    Payment(#[from] PaymentError),
 
 }

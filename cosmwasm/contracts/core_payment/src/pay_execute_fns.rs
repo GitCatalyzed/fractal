@@ -7,7 +7,7 @@ use fractal_structs::core::{Payment};
 use core_invoice::msg::{ExecuteMsg, QueryMsg, OneInvoiceResponse};
 
 use cosmwasm_std::{
-    QueryRequest, WasmMsg, DepsMut, Env, MessageInfo, Response, to_binary, Decimal, WasmQuery
+    QueryRequest, WasmMsg, DepsMut, Env, MessageInfo, Response, to_binary, Decimal, WasmQuery, coins, BankMsg
 };
 use std::str::FromStr;
 
@@ -55,9 +55,9 @@ pub fn execute_pay_invoice(
     }
     
     // BRIDGE/EXCHANGE LOGIC WILL NEED TO BE TRIGGERED HERE
-    // if pay_unit != validated_invoice.pay_unit {
-    //     return Err(ContractError::InvalidPaymentValue{})
-    // }
+    if pay_unit != validated_invoice.receipt_unit {
+        return Err(ContractError::InvalidPaymentValue{})
+    }
 
     let current_payment = validated_invoice.payment_history.len()+1;
 
@@ -74,9 +74,9 @@ pub fn execute_pay_invoice(
         payer_addr: payer.admin,
         payer_alias: payer.business_alias,
         invoice_id: invoice_id.clone(),
-        invoice_address: validated_contract_address,
+        invoice_address: validated_contract_address.clone(),
         payment_amount,
-        pay_unit,
+        pay_unit: pay_unit.clone(),
         pay_date: today,
     };
 
@@ -103,7 +103,7 @@ pub fn execute_pay_invoice(
     }
 
     let msg = WasmMsg::Execute {
-        contract_addr: invoice_address,
+        contract_addr: validated_contract_address.clone().to_string(),
         msg: to_binary(&ExecuteMsg::UpdateInvoice { 
             invoice_id: invoice_id,
             invoice: validated_invoice,
@@ -112,6 +112,44 @@ pub fn execute_pay_invoice(
         funds: vec![],
     };
 
-    Ok(Response::new().add_message(msg))
+    let denom = pay_unit.clone();
+    let onchain_payment = cw_utils::must_pay(&info, &denom)?.u128();
+
+    //Because this is a u128, need to get creative to check payment_amount = funds sent
+    // if onchain_payment.to_string != payment_amount {
+    //     return Err(ContractError::InvalidPaymentValue{})
+    // }
+    let bank_message = BankMsg::Send{
+        to_address: validated_contract_address.clone().to_string(),
+        amount: coins(onchain_payment, &denom),
+    };
+
+    let resp = Response::new().add_message(msg).add_message(bank_message);
+    Ok(resp)
  
 }
+
+// pub fn send_onchain_funds(
+//     deps: DepsMut, 
+//     info: MessageInfo,
+//     pay_unit: String,
+//     payment_amount: String,
+//     invoice_address: String 
+// ) -> Result<Response, ContractError> {
+
+//     let demon = pay_unit;
+
+//     let onchain_payment = cwutils::must_pay(&info, &denom)?.u128();
+
+//     let bank_message = BankMsg::Send{
+//         to_address: invoice_address,
+//         amount: coins(onchain_payment, &denom),
+//     };
+
+//     let resp = Response::new()
+//         .add_message(bank_message)
+//         .add_attribute("action", "send onchain funds")
+//         .add_attribute("amount", onchain_payment.to_string());
+
+//     Ok(resp)
+// }

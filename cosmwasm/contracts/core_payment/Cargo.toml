@@ -50,6 +50,7 @@ serde = { version = "1.0.145", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0.31" }
 fractal_structs = {path = "../fractal_structs"}
 core_invoice = {path = "../core_invoice"}
+cw-utils = "0.13"
 
 [dev-dependencies]
 cw-multi-test = "0.16.2"
