@@ -18,7 +18,6 @@ pub fn create_invoice(
     invoice_id: String,
     invoiced_value: String,
     date_due: String, 
-    pay_unit: String,
     receipt_unit: String,
 ) -> Result<Response, ContractError>{
     
@@ -60,7 +59,6 @@ pub fn create_invoice(
         balance_outstanding,
         date_due,
         status: "Open".to_string(),
-        pay_unit,
         receipt_unit,
         payment_history,
         tokenized_status: "0".to_string(),

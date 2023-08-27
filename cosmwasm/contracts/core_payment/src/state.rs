@@ -2,7 +2,7 @@
 // see: https://crates.io/crates/cw-storage-plus
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use cosmwasm_std::{Addr, Storage, Decimal, Timestamp};
+use cosmwasm_std::{Addr, Storage};
 use cw_storage_plus::{Map};
 use cosmwasm_storage::{singleton, singleton_read, ReadonlySingleton, Singleton};
 use fractal_structs::core::Payment;

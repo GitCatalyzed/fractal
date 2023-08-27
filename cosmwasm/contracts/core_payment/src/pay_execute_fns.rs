@@ -1,16 +1,15 @@
 use crate::error::ContractError;
 use crate::state::{
-    config_read, PAYMENTS //, Payment, 
+    config_read, PAYMENTS
 };
-//use crate::msg::{AllInvoicesResponse, QueryInvoice, OneInvoiceResponse, QueryMsg};
-use fractal_structs::core::{Invoice, Payment};
+
+use fractal_structs::core::{Payment};
 use core_invoice::msg::{ExecuteMsg, QueryMsg, OneInvoiceResponse};
 
 use cosmwasm_std::{
-    QueryRequest, WasmMsg, DepsMut, Env, MessageInfo, Response, to_binary, Decimal, WasmQuery //,Timestamp 
+    QueryRequest, WasmMsg, DepsMut, Env, MessageInfo, Response, to_binary, Decimal, WasmQuery
 };
 use std::str::FromStr;
-//use core_invoice::state::Payment as InvoicePayment;
 
 pub fn execute_pay_invoice(
     deps: DepsMut,
@@ -54,10 +53,11 @@ pub fn execute_pay_invoice(
     if payment_amount > validated_invoice.balance_outstanding{
         return Err(ContractError::InvalidPaymentValue{})
     }
-
-    if pay_unit != validated_invoice.pay_unit {
-        return Err(ContractError::InvalidPaymentValue{})
-    }
+    
+    // BRIDGE/EXCHANGE LOGIC WILL NEED TO BE TRIGGERED HERE
+    // if pay_unit != validated_invoice.pay_unit {
+    //     return Err(ContractError::InvalidPaymentValue{})
+    // }
 
     let current_payment = validated_invoice.payment_history.len()+1;
 

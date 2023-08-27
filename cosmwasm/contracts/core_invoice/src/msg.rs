@@ -1,9 +1,8 @@
-use cosmwasm_schema::{cw_serde, QueryResponse};
+use cosmwasm_schema::{cw_serde, QueryResponses};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-//use crate::state::{Invoice};
-use fractal_structs::core::{Invoice, Payment};
+use fractal_structs::core::{Invoice};
 
 /// Message type for `instantiate` entry_point
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -29,7 +28,6 @@ pub enum ExecuteMsg {
         invoice_id: String,
         invoiced_value: String,
         date_due: String,
-        pay_unit: String,
         receipt_unit: String,
     },
 
@@ -49,13 +47,13 @@ pub enum ExecuteMsg {
 pub enum MigrateMsg {}
 
 /// Message type for `query` entry_point
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema, QueryResponse)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema, QueryResponses)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
     #[returns(AllInvoicesResponse)]
     AllInvoices{ },
     
-    //#[returns(OneInvoiceResponse)]
+    #[returns(OneInvoiceResponse)]
     OneInvoice{
         invoice_id: String,
     },

@@ -1,6 +1,6 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use cosmwasm_std::{Addr, Storage, Decimal, Timestamp};
+use cosmwasm_std::{Addr, Decimal, Timestamp};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Invoice {
@@ -12,7 +12,6 @@ pub struct Invoice {
     pub balance_outstanding: Decimal,
     pub date_due: String,
     pub status: String,
-    pub pay_unit: String,
     pub receipt_unit: String,
     pub payment_history: Vec<Payment>,
     pub tokenized_status: String,

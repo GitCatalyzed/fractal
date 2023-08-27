@@ -87,9 +87,8 @@ pub fn execute(
             invoice_id,
             invoiced_value,
             date_due,
-            pay_unit,
             receipt_unit,
-        } => create_invoice(deps, env, info, payer_addr, payer_alias, invoice_id, invoiced_value, date_due, pay_unit,receipt_unit),
+        } => create_invoice(deps, env, info, payer_addr, payer_alias, invoice_id, invoiced_value, date_due, receipt_unit),
 
         ExecuteMsg::UpdateInvoice{
             invoice_id,
@@ -182,7 +181,6 @@ mod tests {
             invoice_id: "I00000001".to_string(),
             invoiced_value: "1000000.0".to_string(),
             date_due: "2023-07-01".to_string(),
-            pay_unit: "USDC".to_string(),
             receipt_unit: "USD".to_string(),
         };
         //unwrap to assert success
@@ -205,7 +203,6 @@ mod tests {
             invoice_id: "I00000001".to_string(),
             invoiced_value: "-1000000.0".to_string(),
             date_due: "2023-07-01".to_string(),
-            pay_unit: "USDC".to_string(),
             receipt_unit: "USD".to_string(),
         };
         //unwrap to assert success
@@ -233,7 +230,6 @@ mod tests {
             invoice_id: "I00000001".to_string(),
             invoiced_value: "1000000.0".to_string(),
             date_due: "2023-07-01".to_string(),
-            pay_unit: "USDC".to_string(),
             receipt_unit: "USD".to_string(),
         };
         //unwrap to assert success
@@ -246,7 +242,6 @@ mod tests {
             invoice_id: "I00000002".to_string(),
             invoiced_value: "1000000.0".to_string(),
             date_due: "2023-09-01".to_string(),
-            pay_unit: "USDC".to_string(),
             receipt_unit: "USD".to_string(),
         };
         //unwrap to assert success
@@ -280,7 +275,6 @@ mod tests {
             invoice_id: "I00000001".to_string(),
             invoiced_value: "1000000.0".to_string(),
             date_due: "2023-07-01".to_string(),
-            pay_unit: "USDC".to_string(),
             receipt_unit: "USD".to_string(),
         };
         //unwrap to assert success
