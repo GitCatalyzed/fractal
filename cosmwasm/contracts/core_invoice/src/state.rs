@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use cosmwasm_std::{Addr, Storage};
 use cw_storage_plus::{Map};
 use cosmwasm_storage::{singleton, singleton_read, ReadonlySingleton, Singleton};
-use fractal_structs::core::{Invoice};
+use fractal_support::core::{Invoice};
 
 static CONFIG_KEY: &[u8] = b"config";
 //static INVOICE_KEY: &[u8] = b"invoice";

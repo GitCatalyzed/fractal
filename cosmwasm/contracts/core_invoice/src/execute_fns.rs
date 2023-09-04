@@ -6,7 +6,7 @@ use cosmwasm_std::{
     DepsMut, Env, MessageInfo, Response, Decimal//, Timestamp
 };
 use std::str::FromStr;
-use fractal_structs::core::{Invoice, Payment};
+use fractal_support::core::{Invoice, Payment};
 
 
 pub fn create_invoice(
@@ -62,6 +62,7 @@ pub fn create_invoice(
         receipt_unit,
         payment_history,
         tokenized_status: "0".to_string(),
+        ccf_status: "0".to_string(),
     };
     
     INVOICES.save(deps.storage, invoice_id, &invoice)?;

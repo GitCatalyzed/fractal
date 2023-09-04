@@ -3,7 +3,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 //use crate::state::{Payment, Invoice};
-use fractal_structs::core::{Invoice, Payment};
+use fractal_support::core::{Invoice, Payment};
 
 /// Message type for `instantiate` entry_point
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
