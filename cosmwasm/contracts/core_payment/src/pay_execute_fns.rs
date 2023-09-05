@@ -1,4 +1,4 @@
-use crate::error::ContractError;
+use fractal_support::error::ContractError;
 use crate::state::{
     config_read, PAYMENTS
 };
@@ -8,7 +8,7 @@ use fractal_support::route_payment::{Route, payment_route_direct_onchain};
 use core_invoice::msg::{ExecuteMsg, QueryMsg, OneInvoiceResponse};
 
 use cosmwasm_std::{
-    QueryRequest, WasmMsg, DepsMut, Env, MessageInfo, Response, to_binary, Decimal, WasmQuery//, coins, BankMsg
+    QueryRequest, WasmMsg, DepsMut, Env, MessageInfo, Response, to_binary, Decimal, WasmQuery, BankMsg
 };
 use std::str::FromStr;
 
@@ -65,7 +65,7 @@ pub fn execute_pay_invoice(
     //let formatted_date = today.format("%Y-%m-%d").to_string();
 
     //Accept the payment as valid to this point
-    let payment = Payment{
+    let mut payment = Payment{
         payment_id,
         payer_addr: payer.admin,
         payer_alias: payer.business_alias,
@@ -81,10 +81,11 @@ pub fn execute_pay_invoice(
     //BRIDGE CONVERSION ZONE
     if pay_unit != validated_invoice.receipt_unit {
         //Bridge conversion pair routes
-        match conversion(&pay_unit, &validated_invoice.receipt_unit){
-            usdc_usd => unimplemented!(),
-            usd_usdc => unimplemented!(),
-            onchain_onchain => unimplemented!(),
+        match conversion(&pay_unit, &validated_invoice.receipt_unit).as_str(){
+            "usdc_usd" => unimplemented!(),
+            "usd_usdc" => unimplemented!(),
+            "onchain_onchain" => unimplemented!(),
+            &_ => unimplemented!(),
         }
 
     } else if pay_unit == validated_invoice.receipt_unit {
@@ -96,6 +97,7 @@ pub fn execute_pay_invoice(
     }
 
     //ROUTING OF ACTUAL VALUE HAPPENS HERE; WILL NEED TO BE AWARE OF CCF
+    let bank_msg: BankMsg;
     if payment.send_unit != validated_invoice.receipt_unit {
         return Err(ContractError::ConversionFailure{})
     } else {
@@ -103,17 +105,22 @@ pub fn execute_pay_invoice(
         match payment_route(payment.send_unit.clone(),  validated_invoice.receipt_unit.clone()) {
             //USDC-USDC, OSMO-ATOM, Etc.
             Route::DirectOnchain => {
-                payment_route_direct_onchain(payment, deps, info)?;
+                let bank_msg_response = payment_route_direct_onchain(
+                    payment.send_unit.clone(), 
+                    payment.payment_amount.clone(), 
+                    payment.invoice_address.clone(), 
+                    info.clone())?;
+                bank_msg = bank_msg_response;
                 //Update Settlement Status
-                payment.settlement_status = "settled".to_string();
-
+                payment.settlement_status = "settled".to_string();                
             },
             
             //IBC/ETH/BTC
             Route::CrossChain=> unimplemented!(),
             //Fiat
             Route::CircleRoute => unimplemented!(),
-            _ => Err(ContractError::FailedRouting{})
+
+            //_ => return Err(ContractError::FailedRouting{}),
         }
 
     }
@@ -150,7 +157,8 @@ pub fn execute_pay_invoice(
     //     amount: coins(onchain_payment, &denom),
     // };
 
-    // let resp = Response::new().add_message(msg).add_message(bank_message);
-    // Ok(resp)
+    //I removed the second bank message in the response for now, lets see if the routing function handled it
+    let resp = Response::new().add_message(msg).add_message(bank_msg);
+    Ok(resp)
  
 }

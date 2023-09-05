@@ -4,7 +4,7 @@ use cosmwasm_std::{
 };
 use cw2::set_contract_version;
 
-use crate::error::ContractError;
+use fractal_support::error::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
 use crate::state::{config_write, Config};
 use crate::pay_execute_fns::{execute_pay_invoice};

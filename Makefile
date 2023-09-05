@@ -101,7 +101,7 @@ endif
 ###############################################################################
 
 check_version:
-ifneq ($(GO_MINOR_VERSION),20)
+ifneq ($(GO_MINOR_VERSION),21)
 	@echo "ERROR: Go version 1.20 is required for this version of Osmosis."
 	exit 1
 endif

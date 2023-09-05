@@ -51,6 +51,12 @@ pub enum ContractError {
     #[error("Error accessing wallet funds to route onchain payment")]
     MustPayError{},
 
+    #[error("Error accessing wallet funds to route onchain payment")]
+    NoInvoiceValue{},
+
+    #[error("Bank message not received by payment execute function")]
+    BankMsgError{},
+
     #[error("Payment error: {0}")]
     Payment(#[from] PaymentError),
 

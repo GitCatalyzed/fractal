@@ -1,4 +1,4 @@
-use crate::error::ContractError;
+use fractal_support::error::ContractError;
 use crate::state::{
     config_read, INVOICES //, Invoice, Payment
 };

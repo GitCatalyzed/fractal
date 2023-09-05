@@ -123,7 +123,7 @@ dependencies = [
  "cw-multi-test",
  "cw-storage-plus",
  "cw2",
- "fractal_structs",
+ "fractal_support",
  "schemars",
  "serde",
  "thiserror",
@@ -141,7 +141,7 @@ dependencies = [
  "cw-storage-plus",
  "cw-utils 0.13.4",
  "cw2",
- "fractal_structs",
+ "fractal_support",
  "schemars",
  "serde",
  "thiserror",
@@ -455,7 +455,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c8cbd1169bd7b4a0a20d92b9af7a7e0422888bd38a6f5ec29c1fd8c1558a272e"
 
 [[package]]
-name = "fractal_structs"
+name = "fractal_support"
 version = "0.1.0"
 dependencies = [
  "cosmwasm-schema",
@@ -463,6 +463,7 @@ dependencies = [
  "cosmwasm-storage",
  "cw-multi-test",
  "cw-storage-plus",
+ "cw-utils 0.13.4",
  "cw2",
  "schemars",
  "serde",
