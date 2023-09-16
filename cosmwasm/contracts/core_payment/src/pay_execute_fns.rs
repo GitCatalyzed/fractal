@@ -66,7 +66,7 @@ pub fn execute_pay_invoice(
 
     //Accept the payment as valid to this point
     let mut payment = Payment{
-        payment_id,
+        payment_id: payment_id.clone(),
         payer_addr: payer.admin,
         payer_alias: payer.business_alias,
         invoice_id: invoice_id.clone(),
@@ -125,7 +125,7 @@ pub fn execute_pay_invoice(
 
     }
 
-    PAYMENTS.save(deps.storage, (info.sender.clone(), invoice_id.clone()), &payment)?;
+    PAYMENTS.save(deps.storage, payment_id.clone(), &payment)?;
 
     validated_invoice.payment_history.push(payment.clone());
     validated_invoice.balance_outstanding -= payment.payment_amount;

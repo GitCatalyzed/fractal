@@ -29,4 +29,4 @@ pub struct Config {
 
 //pub const CONFIG: Item<Config> = Item::new("config");
 //pub const INVOICES: Map<String, Invoice> = Map::new("invoices");
-pub const PAYMENTS: Map<(Addr, String), Payment> = Map::new("payments");
+pub const PAYMENTS: Map<String, Payment> = Map::new("payments");

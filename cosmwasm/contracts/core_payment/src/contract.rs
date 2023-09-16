@@ -8,7 +8,7 @@ use fractal_support::error::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
 use crate::state::{config_write, Config};
 use crate::pay_execute_fns::{execute_pay_invoice};
-use crate::pay_query_fns::{query_payment};
+use crate::pay_query_fns::{query_payment, query_all_payments};
 
 
 // version info for migration info
@@ -94,7 +94,9 @@ pub fn execute(
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
 
-        QueryMsg::Payment{address, invoice_id} => query_payment(deps, env, address, invoice_id),
+        QueryMsg::Payment{payment_id} => query_payment(deps, env, payment_id),
+
+        QueryMsg::AllPayments{} => query_all_payments(deps),
         
     }
 }

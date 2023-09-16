@@ -43,9 +43,12 @@ pub enum QueryMsg {
 
     #[returns(PaymentResponse)]
     Payment{
-        invoice_id: String,
-        address: String,
+        //address: String,
+        payment_id: String,
     },
+
+    #[returns(AllPaymentsResponse)]
+    AllPayments{ },
 
     // #[returns(OneInvoiceResponse)]
     // OneInvoice{
@@ -62,5 +65,10 @@ pub struct OneInvoiceResponse {
 // Previous code omitted
 #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
 pub struct PaymentResponse {
-    pub payment: Option<Payment>,
+    pub payments: Option<Payment>,
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+pub struct AllPaymentsResponse {
+    pub payments: Vec<Payment>,
 }
